@@ -6,7 +6,8 @@ var {user}=require('./models/user.js');
 var app=express();
 //using middlewear
 app.use(bodyparser.json());
-app.use('/todos',(req,res)=>{
+//using post
+app.post('/todos',(req,res)=>{
     var tab=new Tab({
         text:req.body.text,
         completed:req.body.completed
@@ -25,9 +26,18 @@ app.use('/todos',(req,res)=>{
         res.status(400).send(e);
     });
 });
+//using get
+app.get('/todos',(req,res)=>{
+    Tab.find().then((request)=>{
+        res.send(request);
+    },(err)=>{
+        res.status(400).send(err);
+    });
+});
 var server=app.listen(3000,()=>{
     console.log('port started');
 });
+module.exports={app};
 // mongoose.Promise=global.Promise;
 // mongoose.connect('mongodb://localhost:27017/Datab');
 // var Tab=mongoose.model('Tab',{
